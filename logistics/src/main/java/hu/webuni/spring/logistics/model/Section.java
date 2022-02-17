@@ -29,12 +29,16 @@ public class Section {
 		super();
 	}
 
-	public Section(Milestone fromMilestone, Milestone toMilestone, int number) {
-		
+	public Section(Long id, TransportPlan transportPlan, Milestone fromMilestone, Milestone toMilestone, int number) {
+		super();
+		this.id = id;
+		this.transportPlan = transportPlan;
 		this.fromMilestone = fromMilestone;
 		this.toMilestone = toMilestone;
 		this.number = number;
 	}
+
+
 
 	public void setFromMilestone(Milestone fromMilestone) {
 		this.fromMilestone = fromMilestone;
@@ -70,5 +74,9 @@ public class Section {
 
 	public void setTransportPlan(TransportPlan transportPlan) {
 		this.transportPlan = transportPlan;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}	
 }

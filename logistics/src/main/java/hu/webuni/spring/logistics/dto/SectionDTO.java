@@ -1,34 +1,35 @@
 package hu.webuni.spring.logistics.dto;
 
-import hu.webuni.spring.logistics.model.Milestone;
-import hu.webuni.spring.logistics.model.TransportPlan;
-
 public class SectionDTO {
 	
 	
 	private Long id;
 	
-	private TransportPlan transportPlan;
+	private TransportPlanDTO transportPlan;
 
-	private Milestone fromMilestone;
+	private MilestoneDTO fromMilestone;
 
-	private Milestone toMilestone;
+	private MilestoneDTO toMilestone;
 	
 	private int number;
 	
 	
-	public SectionDTO(Milestone fromMilestone, Milestone toMilestone, int number) {
-		
+
+	public SectionDTO(Long id, TransportPlanDTO transportPlan, MilestoneDTO fromMilestone, MilestoneDTO toMilestone,
+			int number) {
+		super();
+		this.id = id;
+		this.transportPlan = transportPlan;
 		this.fromMilestone = fromMilestone;
 		this.toMilestone = toMilestone;
 		this.number = number;
 	}
 
-	public void setFromMilestone(Milestone fromMilestone) {
+	public void setFromMilestone(MilestoneDTO fromMilestone) {
 		this.fromMilestone = fromMilestone;
 	}
 
-	public void setToMilestone(Milestone toMilestone) {
+	public void setToMilestone(MilestoneDTO toMilestone) {
 		this.toMilestone = toMilestone;
 	}
 
@@ -40,11 +41,11 @@ public class SectionDTO {
 		return id;
 	}
 
-	public Milestone getFromMilestone() {
+	public MilestoneDTO getFromMilestone() {
 		return fromMilestone;
 	}
 
-	public Milestone getToMilestone() {
+	public MilestoneDTO getToMilestone() {
 		return toMilestone;
 	}
 
@@ -52,12 +53,16 @@ public class SectionDTO {
 		return number;
 	}
 
-	public TransportPlan getTransportPlan() {
+	public TransportPlanDTO getTransportPlan() {
 		return transportPlan;
 	}
 
-	public void setTransportPlan(TransportPlan transportPlan) {
+	public void setTransportPlan(TransportPlanDTO transportPlan) {
 		this.transportPlan = transportPlan;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}	
 
 }

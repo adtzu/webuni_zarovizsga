@@ -90,17 +90,17 @@ public class AddressRestController {
 			size = Integer.MAX_VALUE;
 		}
 		
-		Pageable pageable;
-		String[] sortString = sort.split(",");
 		
-		// Set sorting		
+		// Set sorting
+		Pageable pageable;
+		
 		if(sort.contains(",asc") || !sort.contains(",desc"))
 		{
-			pageable = PageRequest.of(page, size, Sort.by(sortString[0]).ascending());
+			pageable = PageRequest.of(page, size, Sort.by(sort.split(",")[0]).ascending());
 		}
 		else
 		{
-			pageable = PageRequest.of(page, size, Sort.by(sortString[0]).descending());
+			pageable = PageRequest.of(page, size, Sort.by(sort.split(",")[0]).descending());
 		}
 		
 		// Get the actual page
@@ -114,9 +114,8 @@ public class AddressRestController {
 				.ok()
 				.headers(responseHeaders)
 				.body(addressMapper.listModelToDto(result.getContent()));
+		
 	}
-	
-	
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<AddressDTO> deleteAddress(@PathVariable Long id) {

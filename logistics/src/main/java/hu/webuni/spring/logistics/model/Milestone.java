@@ -25,11 +25,14 @@ public class Milestone {
 		
 	}
 	
-	public Milestone(LocalDateTime plannedTime, Address address) {
-		
+	public Milestone(Long id, LocalDateTime plannedTime, Address address) {
+		super();
+		this.id = id;
 		this.plannedTime = plannedTime;
 		this.address = address;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -49,6 +52,10 @@ public class Milestone {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

@@ -24,13 +24,14 @@ public class TransportPlan {
 
 	}
 
-	public TransportPlan(List<Section> sections, int income) {
-
+	public TransportPlan(Long id, List<Section> sections, int income) {
+		super();
+		this.id = id;
 		this.sections = sections;
 		this.income = income;
 	}
 
-	
+
 	public List<Section> addNewSection(Section section) {
 		
 		if(!this.sections.contains(section))
@@ -59,5 +60,9 @@ public class TransportPlan {
 
 	public void setIncome(int income) {
 		this.income = income;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}	
 }

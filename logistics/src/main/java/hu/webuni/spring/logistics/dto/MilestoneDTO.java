@@ -13,8 +13,9 @@ public class MilestoneDTO {
 	
 	
 
-	public MilestoneDTO(LocalDateTime plannedTime, AddressDTO address) {
-		
+	public MilestoneDTO(Long id, LocalDateTime plannedTime, AddressDTO address) {
+		super();
+		this.id = id;
 		this.plannedTime = plannedTime;
 		this.address = address;
 	}
@@ -37,6 +38,10 @@ public class MilestoneDTO {
 
 	public void setAddress(AddressDTO address) {
 		this.address = address;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }
