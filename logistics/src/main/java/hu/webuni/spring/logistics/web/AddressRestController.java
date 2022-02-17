@@ -5,6 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.webuni.spring.logistics.dto.AddressDTO;
 import hu.webuni.spring.logistics.mapper.AddressMapper;
+import hu.webuni.spring.logistics.model.Address;
 import hu.webuni.spring.logistics.service.AddressService;
 
 @RestController
@@ -67,8 +74,52 @@ public class AddressRestController {
 		
 	}
 	
+	@PostMapping("/search")
+	public ResponseEntity<List<AddressDTO>> searchByExample(@RequestBody AddressDTO example, 
+			@RequestParam(defaultValue = "0") int page, 
+			@RequestParam(defaultValue = "0") int size, 
+			@RequestParam(defaultValue = "id,asc") String sort) {
+		
+		if(example == null)
+		{
+			return ResponseEntity.badRequest().build();
+		}
+		
+		if(size == 0)
+		{
+			size = Integer.MAX_VALUE;
+		}
+		
+		Pageable pageable;
+		String[] sortString = sort.split(",");
+		
+		// Set sorting		
+		if(sort.contains(",asc") || !sort.contains(",desc"))
+		{
+			pageable = PageRequest.of(page, size, Sort.by(sortString[0]).ascending());
+		}
+		else
+		{
+			pageable = PageRequest.of(page, size, Sort.by(sortString[0]).descending());
+		}
+		
+		// Get the actual page
+		Page<Address> result = addressService.searchByExample(addressMapper.dtoToModel(example), pageable);
+		
+		// Set total count header
+		HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("X-Total-Count", String.valueOf(result.getTotalElements()));
+		
+		return ResponseEntity
+				.ok()
+				.headers(responseHeaders)
+				.body(addressMapper.listModelToDto(result.getContent()));
+	}
+	
+	
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteAddress(@PathVariable Long id) {
+	public ResponseEntity<AddressDTO> deleteAddress(@PathVariable Long id) {
 		
 		try
 		{
