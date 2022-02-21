@@ -24,4 +24,16 @@ public class MilestoneService {
 		
 		return milestoneRepository.save(milestone);
 	}
+	
+	@Transactional
+	public Boolean milestoneExists(Long id) {
+		
+		return milestoneRepository.existsById(id);
+	}
+
+	@Transactional
+	public Milestone getById(Long milestoneId) {
+		
+		return milestoneRepository.getById(milestoneId);
+	}
 }
