@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -30,6 +31,16 @@ public class TransportPlanService {
 	MilestoneRepository milestoneRepository;
 	
 	
+	@Value("${income.loss.30.percent}")
+	int until30;
+	
+	@Value("${income.loss.60.percent}")
+	int until60;
+	
+	@Value("${income.loss.120.percent}")
+	int until120;
+	
+	
 	@Transactional
 	public TransportPlan addNew(TransportPlan plan) {
 		
@@ -49,7 +60,7 @@ public class TransportPlanService {
 	}
 
 	@Transactional
-	public Milestone addDelay(Long planId, Delay delay) {
+	public TransportPlan addDelay(Long planId, Delay delay) {
 		
 		TransportPlan plan = this.getById(planId);
 		
@@ -109,11 +120,33 @@ public class TransportPlanService {
 			}
 		}
 		
+		
 		// Add delay
 		milestone.setPlannedTime(milestone.getPlannedTime().plusMinutes(delay.getDelay()));
 		milestoneRepository.save(milestone);
 		
-		return milestone;
+		
+		// Set income loss
+		if(delay.getDelay() <= 30)
+		{
+			plan.setIncome(this.decreaseIncome(plan.getIncome(), until30));
+		}
+		else if(delay.getDelay() <= 60)
+		{
+			plan.setIncome(this.decreaseIncome(plan.getIncome(), until60));
+		}
+		else
+		{
+			plan.setIncome(this.decreaseIncome(plan.getIncome(), until120));
+		}
+		
+		
+		return plan;
 	}
 	
+
+	private int decreaseIncome(int income, int percent) {
+		
+		return (int) (income * (1.0 - (percent / 100.0)));
+	}
 }

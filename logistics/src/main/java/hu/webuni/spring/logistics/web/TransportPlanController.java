@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import hu.webuni.spring.logistics.dto.DelayDTO;
-import hu.webuni.spring.logistics.dto.MilestoneDTO;
 import hu.webuni.spring.logistics.dto.TransportPlanDTO;
 import hu.webuni.spring.logistics.mapper.DelayMapper;
 import hu.webuni.spring.logistics.mapper.MilestoneMapper;
@@ -39,11 +38,11 @@ public class TransportPlanController {
 	
 	
 	@PostMapping("/{planId}/delay")
-	public ResponseEntity<MilestoneDTO> addDelayToMilestone(@RequestBody DelayDTO delay, @PathVariable Long planId) {
+	public ResponseEntity<TransportPlanDTO> addDelayToMilestone(@RequestBody DelayDTO delay, @PathVariable Long planId) {
 		
 		try
 		{
-			MilestoneDTO updated = milestoneMapper.modelToDto(transportPlanService.addDelay(planId, delayMapper.dtoToModel(delay)));
+			TransportPlanDTO updated = transportPlanMapper.modelToDto(transportPlanService.addDelay(planId, delayMapper.dtoToModel(delay)));
 			return ResponseEntity.ok(updated);
 		}
 		catch(HttpClientErrorException exc)
