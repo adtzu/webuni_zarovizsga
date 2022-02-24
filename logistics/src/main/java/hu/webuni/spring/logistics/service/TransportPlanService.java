@@ -71,12 +71,13 @@ public class TransportPlanService {
 		
 		Milestone milestone = milestoneRepository.getById(delay.getMilestoneId());
 		List<Section> sections = sectionRepository.hasMilestoneWithId(planId, milestone.getId());
-		Section section = sections.get(0);
 		
-		if(section == null)
+		if(sections == null || sections.size() == 0)
 		{
 			throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
 		}
+		
+		Section section = sections.get(0);
 		
 		
 		if(section.getFromMilestone().equals(milestone))
