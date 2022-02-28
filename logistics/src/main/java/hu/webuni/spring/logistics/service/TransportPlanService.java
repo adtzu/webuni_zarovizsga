@@ -50,7 +50,7 @@ public class TransportPlanService {
 	@Transactional
 	public TransportPlan getById(Long id) {
 		
-		return transportPlanRepository.getById(id);
+		return transportPlanRepository.getOne(id);
 	}
 	
 	@Transactional
